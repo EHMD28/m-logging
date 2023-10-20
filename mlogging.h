@@ -1,5 +1,5 @@
-#ifndef __MTECH__PRETTY_TERMINAL_COLORS_H_
-    #define __MTECH__PRETTY_TERMINAL_COLORS_H_
+#ifndef MTECH__PRETTY_TERMINAL_COLORS_H_
+    #define MTECH__PRETTY_TERMINAL_COLORS_H_
 
     #include <stdio.h>
 

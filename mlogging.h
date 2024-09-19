@@ -74,6 +74,15 @@
     }
 
 
+    static inline void MLOG_run_tests(const char* tag, int cond) {
+        if (cond) {
+            printf("%s: %s[PASS]%s\n", tag, FG_GREEN, SET_DEFAULT);
+        } else {
+            printf("%s: %s[FAIL]%s\n", tag, FG_RED, SET_DEFAULT);
+        }
+    }
+
+
     #define MLOG_logNormal(msg) _mlog_logNormal(msg, __FILE__)
     #define MLOG_logFormattedInfo(msg, ...) _mlog_logFormattedInfo(__FILE__, msg, __VA_ARGS__)
     #define MLOG_logError(msg) _mlog_logError(msg, __FILE__)

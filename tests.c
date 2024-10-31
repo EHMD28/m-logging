@@ -1,15 +1,15 @@
 #include "mlogging.h"
 
+
 int main(void) {
-    /* normal */
-    MLOG_logNormal("Message One");
-    MLOG_logFormattedInfo("Message Two | %s: %d", "John Smith", 24);
+    /* normal logging functions */
+    MLOG_log("Hello, World");
+    MLOG_logf("My name is %s", "John Smith");
+    MLOG_logc(COLOR_BLUE, "Lorem ipsum");
+    MLOG_logfc(COLOR_RED, "%s %s", "Merry", "Christmas");
 
-    /* errors */
-    MLOG_logError("Error One");
-    MLOG_logFormattedError("Error Two | An error occured: %s", "error");
+    /* error logging functions */
 
-    /* tests */
-    MLOG_run_tests("Test One", (1 < 2));
-    MLOG_run_tests("Test Two", (5 == 1));
+    /* testing functions */
+
 }

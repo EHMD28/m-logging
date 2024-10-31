@@ -26,7 +26,7 @@
     // ! WARNING: this function should not be called directly. Instead, use corresponding macro 
     // * Newline is included as part of function. 
     static void mlog_log(const char* msg) {
-        printf("%s\n", msg);
+        printf("[LOG]: %s\n", msg);
     }
 
     // ! WARNING: this function should not be called directly. Instead, use corresponding macro.
@@ -34,6 +34,7 @@
     static void mlog_logf(const char* msg, ...) {
         va_list args;
         va_start(args, msg);
+        printf("[LOG]: ");
         vprintf(msg, args);
         puts("");
         va_end(args);
@@ -42,7 +43,7 @@
     // ! WARNING: this function should not be called directly. Instead, use corresponding macro.
     // * Newline is included as part of function. 
     static void mlog_logc(const char* color, const char* msg) {
-        printf("%s%s%s\n", color, msg, NO_COLOR);
+        printf("%s[LOG]: %s%s\n", color, msg, NO_COLOR);
     }
 
     // ! WARNING: this function should not be called directly. Instead, use corresponding macro.
@@ -50,7 +51,7 @@
     static void mlog_logfc(const char* color, const char* msg, ...) {
         va_list args;
         va_start(args, msg);
-        printf("%s", color);
+        printf("%s[LOG]: ", color);
         vprintf(msg, args);
         puts(NO_COLOR);
         va_end(args);
@@ -58,34 +59,71 @@
     }
 
     /* error logging */
+    // ! WARNING: this function should not be called directly. Instead, use corresponding macro.
+    // * Newline is included as part of function. 
+    static void mlog_error(const char* msg) {
+        fprintf(stderr, "[ERROR]: %s\n", msg);
+    }
+
+    // ! WARNING: this function should not be called directly. Instead, use corresponding macro.
+    // * Newline is included as part of function. 
+    static void mlog_errorf(const char* msg, ...) {
+        va_list args;
+        va_start(args, msg);
+        fprintf(stderr, "[ERROR]: ");
+        vfprintf(stderr, msg, args);
+        puts("");
+        va_end(args);
+    }
+
+    // ! WARNING: this function should not be called directly. Instead, use corresponding macro.
+    // * Newline is included as part of function. 
+    static void mlog_errorc(const char* color, const char* msg) {
+        fprintf(stderr, "%s[ERROR]: %s%s\n", color, msg, NO_COLOR);
+    }
+
+    // ! WARNING: this function should not be called directly. Instead, use corresponding macro.
+    // * Newline is included as part of function. 
+    static void mlog_errorfc(const char* color, const char* msg, ...) {
+        va_list args;
+        va_start(args, msg);
+        fprintf(stderr, "%s[ERROR]: ", color);
+        vfprintf(stderr, msg, args);
+        puts(NO_COLOR);
+        va_end(args);
+    }
 
 
     /* test logging */
+    // static void mlog_test(int cond, const char* msg);
+    // static void mlog_testf(int cond, const char* msg, ...);
+    // static void mlog_testc(int cond, const char* color, const char* msg);
+    // static void mlog_testfc(int cond, const char* color, const char* msg, ...);
 
 
-    #ifndef NMLOG
+    #ifndef MLOGOFF
         /* standard */
         #define MLOG_log(msg) mlog_log(msg); 
-        #define MLOG_error(msg) ;
+        #define MLOG_error(msg) mlog_error(msg);
         #define MLOG_test(cond, msg) ;
 
         /* format */
         #define MLOG_logf(msg, ...) mlog_logf(msg, __VA_ARGS__); 
-        #define MLOG_errorf(msg, ...) ;
+        #define MLOG_errorf(msg, ...) mlog_errorf(msg, __VA_ARGS__);
         #define MLOG_testf(cond, msg) ;
 
         /* color */
         #define MLOG_logc(color, msg) mlog_logc(color, msg); 
-        #define MLOG_errorc(color, msg) ;
+        #define MLOG_errorc(color, msg) mlog_errorc(color, msg);
         #define MLOG_testc(color, cond, msg) ;
 
         /* color and format */
         #define MLOG_logfc(color, msg, ...) mlog_logfc(color, msg, __VA_ARGS__); 
-        #define MLOG_errorfc(color, msg, ...) ;
+        #define MLOG_errorfc(color, msg, ...) mlog_errorfc(color, msg, __VA_ARGS__);
         #define MLOG_testfc(color, cond, msg, ...) ;
     #endif
 
-    #ifdef NMLOG
+    #ifdef MLOGOFF
         #define MLOG_log(msg) ; 
         #define MLOG_error(msg) ;
         #define MLOG_test(cond, msg) ;

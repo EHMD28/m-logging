@@ -130,15 +130,17 @@
 
     /* test logging */
 
-    static void mlog_test(int cond, const char* tag) {
+    static int mlog_test(int cond, const char* tag) {
         if (cond) {
             printf("[TEST] %s: %s[PASSED]%s\n", tag, TC_GREEN, NO_COLOR);
+            return 0;
         } else {
             printf("[TEST] %s: %s[FAILED]%s\n", tag, TC_RED, NO_COLOR);
+            return 1;
         }
     }
 
-    static void mlog_testf(int cond, const char* tag, ...) {
+    static int mlog_testf(int cond, const char* tag, ...) {
         va_list args;
         va_start(args, tag);
         printf("[TEST] ");
@@ -146,22 +148,26 @@
 
         if (cond) {
             puts(": " TC_GREEN "[PASSED]" NO_COLOR);
+            return 0;
         } else {
             puts(": " TC_RED "[FAILED]" NO_COLOR);
+            return 1;
         }
 
         va_end(args);
     }
 
-    static void mlog_testc(const char* color, int cond, const char* tag) {
+    static int mlog_testc(const char* color, int cond, const char* tag) {
         if (cond) {
             printf("%s[TEST] %s: %s[PASSED]%s\n", color, tag, TC_GREEN, NO_COLOR);
+            return 0;
         } else {
             printf("%s[TEST] %s: %s[FAILED]%s\n", color, tag, TC_RED, NO_COLOR);
+            return 1;
         }
     }
 
-    static void mlog_testfc(const char* color, int cond, const char* tag, ...) {
+    static int mlog_testfc(const char* color, int cond, const char* tag, ...) {
         va_list args;
         va_start(args, tag);
         printf("%s[TEST] ", color);
@@ -169,8 +175,10 @@
 
         if (cond) {
             puts(": " TC_GREEN "[PASSED]" NO_COLOR);
+            return 0;
         } else {
             puts(": " TC_RED "[FAILED]" NO_COLOR);
+            return 1;
         }
 
         va_end(args);

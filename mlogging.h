@@ -58,7 +58,41 @@
 
     }
 
+    static void mlog_array_int(int arr[], size_t size) {
+        printf("[LOG]: [");
+        for (int i = 0; i < size; i++) {
+            printf("%d%s", arr[i], (i == (size - 1) ? "" : ", "));
+        }
+        puts("]");
+    }
+
+    static void mlog_array_char(char arr[], size_t size) {
+        printf("[LOG]: [");
+        for (int i = 0; i < size; i++) {
+            printf("%c%s", arr[i], (i == (size - 1) ? "" : ", "));
+        }
+        puts("]");
+    }
+
+
+    static void mlog_array_double(double arr[], size_t size) {
+        printf("[LOG]: [");
+        for (int i = 0; i < size; i++) {
+            printf("%lf%s", arr[i], (i == (size - 1) ? "" : ", "));
+        }
+        puts("]");
+    }
+
+    static void mlog_array_str(char* arr[], size_t size) {
+        printf("[LOG]: [");
+        for (int i = 0; i < size; i++) {
+            printf("%s%s", arr[i], (i == (size - 1) ? "" : ", "));
+        }
+        puts("]");
+    }
+
     /* error logging */
+
     // ! WARNING: this function should not be called directly. Instead, use corresponding macro.
     // * Newline is included as part of function.
     static void mlog_error(const char* msg) {
@@ -95,6 +129,7 @@
 
 
     /* test logging */
+
     static void mlog_test(int cond, const char* tag) {
         if (cond) {
             printf("[TEST] %s: %s[PASSED]%s\n", tag, TC_GREEN, NO_COLOR);
@@ -141,13 +176,17 @@
         va_end(args);
     }
 
-
-
     #ifndef MLOGOFF
         /* standard */
         #define MLOG_log(msg) mlog_log(msg);
         #define MLOG_error(msg) mlog_error(msg);
         #define MLOG_test(cond, tag) mlog_test(cond, tag);
+
+        /* arrays */
+        #define MLOG_array_int(arr, size) mlog_array_int(arr, size);
+        #define MLOG_array_char(arr, size) mlog_array_char(arr, size);
+        #define MLOG_array_double(arr, size) mlog_array_double(arr, size);
+        #define MLOG_array_str(arr, size) mlog_array_str(arr, size);
 
         /* format */
         #define MLOG_logf(msg, ...) mlog_logf(msg, __VA_ARGS__);

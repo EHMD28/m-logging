@@ -209,6 +209,11 @@
         #define MLOG_error(msg) ((void) 0);
         #define MLOG_test(cond, msg) ((void) 0);
 
+        #define MLOG_array_int(arr, size)
+        #define MLOG_array_char(arr, size)
+        #define MLOG_array_double(arr, size)
+        #define MLOG_array_str(arr, size)
+
         #define MLOG_logf(msg, ...) ((void) 0);
         #define MLOG_errorf(msg, ...) ((void) 0);
         #define MLOG_testf(cond, msg) ((void) 0);

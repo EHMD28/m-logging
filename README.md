@@ -5,15 +5,11 @@ library. I am not of the belief that entire frameworks are the best option
 for debugging and testing code. 
 
 ## Usage
-The M-Logging "library" comes a few basic functions: `MLOG_log(msg)`, 
-`MLOG_error(msg)`, and `MLOG_test(cond, tag)`. This is very important: **logging
-enable by default, but it can be turned off with the flag `-DMLOGOFF`**. There
-are more options, such as formatted printing (`MLOG_logf(msg, ...)`,
-`MLOG_errorf(msg, ...)`, `MLOG_testf(cond, tag, ...)`). There are also colored
-options, such as `MLOG_logc(color, msg)` and `MLOG_testc(cond, color, tag)`.
-Finally, there are functions for formatting and color, such as
-`MLOG_logfc(color, msg, ...)`, `MLOG_errorfc(color, msg, ...)`, and
-`MLOG_testfc(color, cond, tag, ...)`.
+The M-Logging "library" comes with a few basic functions: `MLOG_log(msg)`,
+`MLOG_array_<type>`, `MLOG_error(msg)`, and `MLOG_test(tag, cond)`. There
+are also colored/formatted variants of these functions
+(e.g. `MLOG_logf(msg, <args>)`, `MLOG_errorc(color, msg)`, or
+`MLOG_testfc(color, tag, cond)`). The available colors are prefixed with `TC_`, standing for terminal color (e.g. `TC_RED` and `TC_PURPLE`).
 
 ## Syntax 
 See [tests.c](tests.c) for full list of examples. 

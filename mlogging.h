@@ -209,5 +209,9 @@
 /* color and format */
 #define MLOG_logfc(color, msg, ...) ((void)0);
 #define MLOG_errorfc(color, msg, ...) ((void)0);
+
+/* panic */
+#define MLOG_panic(msg) ((void)0);
+#define MLOG_panicf(msg, ...) ((void)0);
 #endif
 #endif

@@ -5,9 +5,7 @@ typedef struct Foo {
     int b;
 } Foo;
 
-void print_foo(struct Foo* value) {
-    printf("(%d, %d)", value->a, value->b);
-}
+void print_foo(struct Foo *value) { printf("(%d, %d)", value->a, value->b); }
 
 int main(void) {
     /* normal logging functions */
@@ -17,11 +15,11 @@ int main(void) {
     MLOG_logfc(TC_RED, "%s %s", "Merry", "Christmas");
 
     /* array logging functions */
-    MLOG_array_int(((int[]) {1, 2, 3, 4, 5}), 5);
-    MLOG_array_char(((char[]) {'H', 'e', 'l', 'l', 'o'}), 5);
-    MLOG_array_double(((double[]) {3.14, 2.72, 1.62, 0.886}), 4);
-    MLOG_array_str(((char* []) {"Euler", "Gauss", "Laplace", "Fourier"}), 4);
-    struct Foo foos[] = { (Foo) {1,2}, (Foo) {3,4}, (Foo) {5,6} };
+    MLOG_array_int(((int[]){1, 2, 3, 4, 5}), 5);
+    MLOG_array_char(((char[]){'H', 'e', 'l', 'l', 'o'}), 5);
+    MLOG_array_double(((double[]){3.14, 2.72, 1.62, 0.886}), 4);
+    MLOG_array_str(((char *[]){"Euler", "Gauss", "Laplace", "Fourier"}), 4);
+    struct Foo foos[] = {(Foo){1, 2}, (Foo){3, 4}, (Foo){5, 6}};
     MLOG_array_custom(foos, 3, print_foo);
 
     /* error logging functions */
@@ -31,6 +29,13 @@ int main(void) {
     MLOG_errorfc(TC_RED, "This error occured %s", "mistakes were made");
 
     /* testing functions */
-    MLOG_test("5 == 5", 5==5);
+    MLOG_test("5 == 5", 5 == 5);
     MLOG_testc("1 == 2", TC_BLUE, (1 == 2));
+
+    /* panic */
+    // The `MLOG_panic()` macro causes the program to immediately exit. If
+    // you just want to print an error, use `MLOG_error()` instead.
+    MLOG_panic("An very bad error occured");
+    // This line is unreachable.
+    MLOG_panicf("A very, very bad error occured: %s", "Oh nooooooo");
 }

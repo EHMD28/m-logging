@@ -15,7 +15,7 @@ The standard logging functions are `MLOG.log(msg)`, `MLOG.logf(msg, ...)`,
 using the `MLOG.{type}_array(arr, arr_size)`. For custom data types, you can use
 the `MLOG.array_custom(arr, arr_size, type_size, to_str_fn)`.
 
-```
+```c
 // Custom Array Logging Example
 #include "mlogging.h"
 
@@ -55,7 +55,7 @@ and `MLOG.test_equ(tag, equ_func, inp_one, inp_two)`. These functions will
 check the condition, and if it is true, then the test will pass, returning 1.
 If it is false, then the test will fail, returning 0.
 
-```
+```c
 // Equality Test Example
 #include "mlogging.h"
 

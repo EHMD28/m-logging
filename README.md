@@ -9,7 +9,12 @@ The M-Logging "library" comes with a few basic functions: `MLOG_log(msg)`,
 `MLOG_array_<type>`, `MLOG_error(msg)`, and `MLOG_test(tag, cond)`. There
 are also colored/formatted variants of these functions
 (e.g. `MLOG_logf(msg, <args>)`, `MLOG_errorc(color, msg)`, or
-`MLOG_testfc(color, tag, cond)`). The available colors are prefixed with `TC_`, standing for terminal color (e.g. `TC_RED` and `TC_PURPLE`).
+`MLOG_testfc(color, tag, cond)`). The available colors are prefixed with `TC_`,
+standing for terminal color (e.g. `TC_RED` and `TC_PURPLE`).
+
+## Toggling
+Different features of the M-Logging library can be turned on and off using
+the macros `MLOG_OFF`, `MLOG_TEST_ONLY`, `MLOG_PANIC_OFF`.
 
 ## Syntax 
 See [tests.c](tests.c) for full list of examples. 

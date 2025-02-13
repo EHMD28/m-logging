@@ -41,6 +41,7 @@ static struct __internal__mlog_term_colors MLOG_Color = {
 /* Logging Functions */
 
 #include <stdarg.h>
+#include <stdint.h>
 #include <stdio.h>
 #include <stdlib.h>
 
@@ -130,7 +131,15 @@ static void __internal__mlog_array_str(char* arr[], size_t size) {
 
 static void __internal__mlog_array_custom(void* arr, size_t len,
                                           size_t type_size,
-                                          char* (*fmt_fn)(void*)) {}
+                                          char* (*fmt_fn)(void*)) {
+    printf("[LOG]: [");
+    char* ptr_pos = (char*)arr;
+    for (int i = 0; i < len; i++) {
+        printf("%s%s", fmt_fn(ptr_pos), (i == (len - 1)) ? "" : ", ");
+        ptr_pos += type_size;
+    }
+    puts("]");
+}
 
 /* error logging */
 
@@ -171,14 +180,13 @@ static int __internal__mlog_test(const char* tag, int cond) {
     }
 }
 
-static int __internal__mlog_testc(const char* color, int cond,
-                                  const char* tag) {
-    if (cond) {
-        printf("%s[TEST] %s: %s[PASSED]%s\n", color, tag, TC_GREEN, NO_COLOR);
-        return 0;
+static void __internal__mlog_test_equ(const char* tag,
+                                      int (*equ_test)(void*, void*), void* one,
+                                      void* two) {
+    if (equ_test(one, two)) {
+        printf("[TEST] %s: %s[PASSED]%s\n", tag, TC_GREEN, NO_COLOR);
     } else {
-        printf("%s[TEST] %s: %s[FAILED]%s\n", color, tag, TC_RED, NO_COLOR);
-        return 1;
+        printf("[TEST] %s: %s[FAILED]%s\n", tag, TC_RED, NO_COLOR);
     }
 }
 
@@ -210,7 +218,7 @@ struct __internal_mlog_libfuncs {
     void (*long_array)(long arr[], size_t len);
     void (*long_long_array)(long long arr[], size_t len);
     void (*array_custom)(void* arr, size_t len, size_t type_size,
-                         char* (*fmt_fn)(void*));
+                         char* (*to_str)(void*));
     /* error */
     void (*error)(const char* msg);
     void (*errorf)(const char* msg, ...);
@@ -221,8 +229,7 @@ struct __internal_mlog_libfuncs {
     void (*panicf)(const char* msg, ...);
     /* test */
     int (*test)(const char* tag, int cond);
-    // vvv might remove vvv
-    void (*test_equ)(const char*, int (*equ_test)(void*, void*), void* one,
+    void (*test_equ)(const char* tag, int (*equ_test)(void*, void*), void* one,
                      void* two);
 };
 
@@ -236,6 +243,7 @@ static const struct __internal_mlog_libfuncs MLOG = {
     .int_array = &__internal__mlog_array_int,
     .long_array = &__internal__mlog_array_long,
     .long_long_array = &__internal__mlog_array_long_long,
+    .array_custom = &__internal__mlog_array_custom,
     .error = &__internal__mlog_error,
     .errorf = &__internal__mlog_errorf,
     .errorc = &__internal__mlog_errorc,
@@ -243,6 +251,6 @@ static const struct __internal_mlog_libfuncs MLOG = {
     .panic = &__internal__mlog_panic,
     .panicf = &__internal__mlog_panicf,
     .test = &__internal__mlog_test,
-};
+    .test_equ = &__internal__mlog_test_equ};
 
 #endif

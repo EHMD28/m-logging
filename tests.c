@@ -22,7 +22,7 @@ struct Point new_point(int a, int b) {
     };
 }
 
-char* print_point(void* p) {
+char* point_to_str(void* p) {
     struct Point* point = (struct Point*)p;
     static char buffer[100];
     memset(buffer, 0, sizeof(buffer));
@@ -44,7 +44,7 @@ void log_arrays(void) {
     struct Point points[] = {new_point(1, 2), new_point(3, 4), new_point(5, 6),
                              new_point(7, 8), new_point(9, 10)};
     MLOG.array_custom(points, ARR_SIZE(points), sizeof(struct Point),
-                      &print_point);
+                      &point_to_str);
 }
 
 void log_error(void) {
@@ -54,9 +54,19 @@ void log_error(void) {
     MLOG.errorfc(MLOG_Color.Purple, "A %s error occured", "purple");
 }
 
+int points_equal(void* p1, void* p2) {
+    struct Point* point_one = p1;
+    struct Point* point_two = p2;
+
+    return (point_one->a == point_two->a) && (point_one->b == point_two->b);
+}
+
 void log_tests(void) {
     MLOG.test("2 + 4", (2 + 4) == 6);
     MLOG.test("String Comparison", strcmp("John", "john") == 0);
+    struct Point p1 = {2, 5};
+    struct Point p2 = {2, 5};
+    MLOG.test_equ("Points Equal", &points_equal, &p1, &p2);
 }
 
 void log_panic(void) {
@@ -68,6 +78,7 @@ void log_panic(void) {
 int main(void) {
     log_normal();
     log_arrays();
+    log_error();
     log_tests();
     log_panic();
 }

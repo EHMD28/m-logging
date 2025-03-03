@@ -76,6 +76,18 @@ void log_panic(void) {
 }
 
 int main(void) {
+    /*
+        Trying uncommenting each of the lines one at a time and see how that
+        affects the output.
+    */
+    // MLOG.set_config(MLOG_CONF_ALL_ON);
+    // MLOG.set_config(MLOG_CONF_ALL_OFF);
+    // MLOG.set_config(MLOG_CONF_LOG_ON);
+    // MLOG.set_config(MLOG_CONF_ERR_ON);
+    // MLOG.set_config(MLOG_CONF_TEST_ON);
+    // MLOG.set_config(MLOG_CONF_PANIC_ON);
+    // MLOG.set_config(MLOG_CONF_LOG_ON | MLOG_CONF_TEST_ON);
+
     log_normal();
     log_arrays();
     log_error();

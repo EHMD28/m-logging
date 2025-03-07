@@ -71,8 +71,13 @@ void log_tests(void) {
 
 void log_panic(void) {
     MLOG.panic("Very bad error occured");
-    // vvvv This line is unreachable because panic makes program exit vvvv
-    MLOG.panicf("Don't think. Just %s", "panic");
+    // vv The lines below are unreachable because panic makes program exit vv
+    //  MLOG.panicf("Don't think. Just %s", "panic");
+
+    /* The first argument can also be NULL if you don't want to provide
+        additional information. __FILE__ and __LINE__ are macros which are to
+       create a barebones stack trace. */
+    // MLOG.todo("Finish integrating library first", __FILE__, __LINE__);
 }
 
 int main(void) {

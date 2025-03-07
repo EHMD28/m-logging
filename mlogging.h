@@ -4,7 +4,7 @@
 
 /* Terminal Colors */
 
-struct __internal__mlog_term_colors {
+struct _internal__mlog_term_colors {
     const char* const Reset;
     const char* const Black;
     const char* const Red;
@@ -16,7 +16,7 @@ struct __internal__mlog_term_colors {
     const char* const White;
 };
 
-static struct __internal__mlog_term_colors MLOG_Color = {
+static struct _internal__mlog_term_colors MLOG_Color = {
     .Reset = "\033[0m",
     .Black = "\033[0;30m",
     .Red = "\033[0;31m",
@@ -36,30 +36,31 @@ static struct __internal__mlog_term_colors MLOG_Color = {
 #include <stdlib.h>
 
 /* Function Signatures */
-static void __internal__mlog_log(const char* msg);
-static void __internal__mlog_logf(const char* msg, ...);
-static void __internal__mlog_logc(const char* color, const char* msg);
-static void __internal__mlog_logfc(const char* color, const char* msg, ...);
-static void __internal__mlog_array_short(short arr[], size_t size);
-static void __internal__mlog_array_int(int arr[], size_t size);
-static void __internal__mlog_array_long(long arr[], size_t size);
-static void __internal__mlog_array_long_long(long long arr[], size_t size);
-static void __internal__mlog_array_char(char arr[], size_t size);
-static void __internal__mlog_array_double(double arr[], size_t size);
-static void __internal__mlog_array_str(char* arr[], size_t size);
-static void __internal__mlog_array_custom(void* arr, size_t len,
+static void _internal__mlog_log(const char* msg);
+static void _internal__mlog_logf(const char* msg, ...);
+static void _internal__mlog_logc(const char* color, const char* msg);
+static void _internal__mlog_logfc(const char* color, const char* msg, ...);
+static void _internal__mlog_array_short(short arr[], size_t size);
+static void _internal__mlog_array_int(int arr[], size_t size);
+static void _internal__mlog_array_long(long arr[], size_t size);
+static void _internal__mlog_array_long_long(long long arr[], size_t size);
+static void _internal__mlog_array_char(char arr[], size_t size);
+static void _internal__mlog_array_double(double arr[], size_t size);
+static void _internal__mlog_array_str(char* arr[], size_t size);
+static void _internal__mlog_array_custom(void* arr, size_t len,
                                           size_t type_size,
                                           char* (*fmt_fn)(void*));
-static void __internal__mlog_error(const char* msg);
-static void __internal__mlog_errorf(const char* msg, ...);
-static void __internal__mlog_errorc(const char* color, const char* msg);
-static void __internal__mlog_errorfc(const char* color, const char* msg, ...);
-static int __internal__mlog_test(const char* tag, int cond);
-static void __internal__mlog_test_equ(const char* tag,
+static void _internal__mlog_error(const char* msg);
+static void _internal__mlog_errorf(const char* msg, ...);
+static void _internal__mlog_errorc(const char* color, const char* msg);
+static void _internal__mlog_errorfc(const char* color, const char* msg, ...);
+static int _internal__mlog_test(const char* tag, int cond);
+static void _internal__mlog_test_equ(const char* tag,
                                       int (*equ_test)(void*, void*), void* one,
                                       void* two);
-static void __internal__mlog_panic(const char* msg);
-static void __internal__mlog_panicf(const char* msg, ...);
+static void _internal__mlog_panic(const char* msg);
+static void _internal__mlog_panicf(const char* msg, ...);
+static void _internal_mlog_todo(const char* info, const char* file, int line);
 
 /* Configuration */
 typedef enum : short {
@@ -71,10 +72,10 @@ typedef enum : short {
     MLOG_CONF_ALL_OFF = 0,         // 0b00000000
 } MLOG_Config;
 
-static void __internal__mlog_set_config(MLOG_Config config);
+static void _internal__mlog_set_config(MLOG_Config config);
 
 struct __internal_mlog_libfuncs {
-    MLOG_Config __internal__config;
+    MLOG_Config _internal__config;
     /* basic */
     void (*log)(const char* msg);
     void (*logf)(const char* msg, ...);
@@ -96,6 +97,7 @@ struct __internal_mlog_libfuncs {
     /* panic */
     void (*panic)(const char* msg);
     void (*panicf)(const char* msg, ...);
+    void (*todo)(const char* info, const char* file, int line);
     /* test */
     int (*test)(const char* tag, int cond);
     void (*test_equ)(const char* tag, int (*equ_test)(void*, void*), void* one,
@@ -105,44 +107,45 @@ struct __internal_mlog_libfuncs {
 };
 
 static struct __internal_mlog_libfuncs MLOG = {
-    .__internal__config = MLOG_CONF_ALL_ON,
-    .log = &__internal__mlog_log,
-    .logf = &__internal__mlog_logf,
-    .logc = &__internal__mlog_logc,
-    .logfc = &__internal__mlog_logfc,
-    .char_array = &__internal__mlog_array_char,
-    .short_array = &__internal__mlog_array_short,
-    .int_array = &__internal__mlog_array_int,
-    .long_array = &__internal__mlog_array_long,
-    .long_long_array = &__internal__mlog_array_long_long,
-    .array_custom = &__internal__mlog_array_custom,
-    .error = &__internal__mlog_error,
-    .errorf = &__internal__mlog_errorf,
-    .errorc = &__internal__mlog_errorc,
-    .errorfc = &__internal__mlog_errorfc,
-    .panic = &__internal__mlog_panic,
-    .panicf = &__internal__mlog_panicf,
-    .test = &__internal__mlog_test,
-    .test_equ = &__internal__mlog_test_equ,
-    .set_config = &__internal__mlog_set_config,
+    ._internal__config = MLOG_CONF_ALL_ON,
+    .log = &_internal__mlog_log,
+    .logf = &_internal__mlog_logf,
+    .logc = &_internal__mlog_logc,
+    .logfc = &_internal__mlog_logfc,
+    .char_array = &_internal__mlog_array_char,
+    .short_array = &_internal__mlog_array_short,
+    .int_array = &_internal__mlog_array_int,
+    .long_array = &_internal__mlog_array_long,
+    .long_long_array = &_internal__mlog_array_long_long,
+    .array_custom = &_internal__mlog_array_custom,
+    .error = &_internal__mlog_error,
+    .errorf = &_internal__mlog_errorf,
+    .errorc = &_internal__mlog_errorc,
+    .errorfc = &_internal__mlog_errorfc,
+    .panic = &_internal__mlog_panic,
+    .panicf = &_internal__mlog_panicf,
+    .todo=&_internal_mlog_todo,
+    .test = &_internal__mlog_test,
+    .test_equ = &_internal__mlog_test_equ,
+    .set_config = &_internal__mlog_set_config,
 };
 
-static void __internal__mlog_set_config(MLOG_Config config) {
-    MLOG.__internal__config = config;
+static void _internal__mlog_set_config(MLOG_Config config) {
+    MLOG._internal__config = config;
 }
 
 // /* Used for setting configuration for MLOG. Default value is all initialized.
-// */ static MLOG_Config MLOG.__internal__config = MLOG_CONF_ALL_ON;
+// */ static MLOG_Config MLOG._internal__config = MLOG_CONF_ALL_ON;
 
 /* basic logging */
 
-static void __internal__mlog_log(const char* msg) {
-    if (MLOG.__internal__config & MLOG_CONF_LOG_ON)
+static void _internal__mlog_log(const char* msg) {
+    if (MLOG._internal__config & MLOG_CONF_LOG_ON)
         printf("[LOG]: %s\n", msg);
 }
 
-static void __internal__mlog_logf(const char* msg, ...) {
-    if (MLOG.__internal__config & MLOG_CONF_LOG_ON) {
+static void _internal__mlog_logf(const char* msg, ...) {
+    if (MLOG._internal__config & MLOG_CONF_LOG_ON) {
         va_list args;
         va_start(args, msg);
         printf("[LOG]: ");
@@ -152,13 +155,13 @@ static void __internal__mlog_logf(const char* msg, ...) {
     }
 }
 
-static void __internal__mlog_logc(const char* color, const char* msg) {
-    if (MLOG.__internal__config & MLOG_CONF_LOG_ON)
+static void _internal__mlog_logc(const char* color, const char* msg) {
+    if (MLOG._internal__config & MLOG_CONF_LOG_ON)
         printf("%s[LOG]: %s%s\n", color, msg, MLOG_Color.Reset);
 }
 
-static void __internal__mlog_logfc(const char* color, const char* msg, ...) {
-    if (MLOG.__internal__config & MLOG_CONF_LOG_ON) {
+static void _internal__mlog_logfc(const char* color, const char* msg, ...) {
+    if (MLOG._internal__config & MLOG_CONF_LOG_ON) {
         va_list args;
         va_start(args, msg);
         printf("%s[LOG]: ", color);
@@ -168,8 +171,8 @@ static void __internal__mlog_logfc(const char* color, const char* msg, ...) {
     }
 }
 
-static void __internal__mlog_array_short(short arr[], size_t size) {
-    if (MLOG.__internal__config & MLOG_CONF_LOG_ON) {
+static void _internal__mlog_array_short(short arr[], size_t size) {
+    if (MLOG._internal__config & MLOG_CONF_LOG_ON) {
         printf("[LOG]: [");
         for (size_t i = 0; i < size; i++) {
             printf("%d%s", arr[i], (i == (size - 1) ? "" : ", "));
@@ -178,8 +181,8 @@ static void __internal__mlog_array_short(short arr[], size_t size) {
     }
 }
 
-static void __internal__mlog_array_int(int arr[], size_t size) {
-    if (MLOG.__internal__config & MLOG_CONF_LOG_ON) {
+static void _internal__mlog_array_int(int arr[], size_t size) {
+    if (MLOG._internal__config & MLOG_CONF_LOG_ON) {
         printf("[LOG]: [");
         for (size_t i = 0; i < size; i++) {
             printf("%d%s", arr[i], (i == (size - 1) ? "" : ", "));
@@ -188,8 +191,8 @@ static void __internal__mlog_array_int(int arr[], size_t size) {
     }
 }
 
-static void __internal__mlog_array_long(long arr[], size_t size) {
-    if (MLOG.__internal__config & MLOG_CONF_LOG_ON) {
+static void _internal__mlog_array_long(long arr[], size_t size) {
+    if (MLOG._internal__config & MLOG_CONF_LOG_ON) {
         printf("[LOG]: [");
         for (size_t i = 0; i < size; i++) {
             printf("%ld%s", arr[i], (i == (size - 1) ? "" : ", "));
@@ -198,8 +201,8 @@ static void __internal__mlog_array_long(long arr[], size_t size) {
     }
 }
 
-static void __internal__mlog_array_long_long(long long arr[], size_t size) {
-    if (MLOG.__internal__config & MLOG_CONF_LOG_ON) {
+static void _internal__mlog_array_long_long(long long arr[], size_t size) {
+    if (MLOG._internal__config & MLOG_CONF_LOG_ON) {
         printf("[LOG]: [");
         for (size_t i = 0; i < size; i++) {
             printf("%lld%s", arr[i], (i == (size - 1) ? "" : ", "));
@@ -208,8 +211,8 @@ static void __internal__mlog_array_long_long(long long arr[], size_t size) {
     }
 }
 
-static void __internal__mlog_array_char(char arr[], size_t size) {
-    if (MLOG.__internal__config & MLOG_CONF_LOG_ON) {
+static void _internal__mlog_array_char(char arr[], size_t size) {
+    if (MLOG._internal__config & MLOG_CONF_LOG_ON) {
         printf("[LOG]: [");
         for (size_t i = 0; i < size; i++) {
             printf("%c%s", arr[i], (i == (size - 1) ? "" : ", "));
@@ -218,8 +221,8 @@ static void __internal__mlog_array_char(char arr[], size_t size) {
     }
 }
 
-static void __internal__mlog_array_double(double arr[], size_t size) {
-    if (MLOG.__internal__config & MLOG_CONF_LOG_ON) {
+static void _internal__mlog_array_double(double arr[], size_t size) {
+    if (MLOG._internal__config & MLOG_CONF_LOG_ON) {
         printf("[LOG]: [");
         for (size_t i = 0; i < size; i++) {
             printf("%lf%s", arr[i], (i == (size - 1) ? "" : ", "));
@@ -228,8 +231,8 @@ static void __internal__mlog_array_double(double arr[], size_t size) {
     }
 }
 
-static void __internal__mlog_array_str(char* arr[], size_t size) {
-    if (MLOG.__internal__config & MLOG_CONF_LOG_ON) {
+static void _internal__mlog_array_str(char* arr[], size_t size) {
+    if (MLOG._internal__config & MLOG_CONF_LOG_ON) {
         printf("[LOG]: [");
         for (size_t i = 0; i < size; i++) {
             printf("%s%s", arr[i], (i == (size - 1) ? "" : ", "));
@@ -238,10 +241,10 @@ static void __internal__mlog_array_str(char* arr[], size_t size) {
     }
 }
 
-static void __internal__mlog_array_custom(void* arr, size_t len,
+static void _internal__mlog_array_custom(void* arr, size_t len,
                                           size_t type_size,
                                           char* (*fmt_fn)(void*)) {
-    if (MLOG.__internal__config & MLOG_CONF_LOG_ON) {
+    if (MLOG._internal__config & MLOG_CONF_LOG_ON) {
         printf("[LOG]: [");
         char* ptr_pos = (char*)arr;
         for (int i = 0; i < len; i++) {
@@ -254,13 +257,13 @@ static void __internal__mlog_array_custom(void* arr, size_t len,
 
 /* error logging */
 
-static void __internal__mlog_error(const char* msg) {
-    if (MLOG.__internal__config & MLOG_CONF_ERR_ON)
+static void _internal__mlog_error(const char* msg) {
+    if (MLOG._internal__config & MLOG_CONF_ERR_ON)
         fprintf(stderr, "[ERROR]: %s\n", msg);
 }
 
-static void __internal__mlog_errorf(const char* msg, ...) {
-    if (MLOG.__internal__config & MLOG_CONF_ERR_ON) {
+static void _internal__mlog_errorf(const char* msg, ...) {
+    if (MLOG._internal__config & MLOG_CONF_ERR_ON) {
         va_list args;
         va_start(args, msg);
         fprintf(stderr, "[ERROR]: ");
@@ -270,13 +273,13 @@ static void __internal__mlog_errorf(const char* msg, ...) {
     }
 }
 
-static void __internal__mlog_errorc(const char* color, const char* msg) {
-    if (MLOG.__internal__config & MLOG_CONF_ERR_ON)
+static void _internal__mlog_errorc(const char* color, const char* msg) {
+    if (MLOG._internal__config & MLOG_CONF_ERR_ON)
         fprintf(stderr, "%s[ERROR]: %s%s\n", color, msg, MLOG_Color.Reset);
 }
 
-static void __internal__mlog_errorfc(const char* color, const char* msg, ...) {
-    if (MLOG.__internal__config & MLOG_CONF_ERR_ON) {
+static void _internal__mlog_errorfc(const char* color, const char* msg, ...) {
+    if (MLOG._internal__config & MLOG_CONF_ERR_ON) {
         va_list args;
         va_start(args, msg);
         fprintf(stderr, "%s[ERROR]: ", color);
@@ -287,8 +290,8 @@ static void __internal__mlog_errorfc(const char* color, const char* msg, ...) {
 }
 
 /* testing */
-static int __internal__mlog_test(const char* tag, int cond) {
-    if (MLOG.__internal__config & MLOG_CONF_TEST_ON) {
+static int _internal__mlog_test(const char* tag, int cond) {
+    if (MLOG._internal__config & MLOG_CONF_TEST_ON) {
         if (cond) {
             printf("[TEST] %s: %s[PASSED]%s\n", tag, MLOG_Color.Green,
                    MLOG_Color.Reset);
@@ -302,10 +305,10 @@ static int __internal__mlog_test(const char* tag, int cond) {
     return 0;
 }
 
-static void __internal__mlog_test_equ(const char* tag,
+static void _internal__mlog_test_equ(const char* tag,
                                       int (*equ_test)(void*, void*), void* one,
                                       void* two) {
-    if (MLOG.__internal__config & MLOG_CONF_TEST_ON) {
+    if (MLOG._internal__config & MLOG_CONF_TEST_ON) {
         if (equ_test(one, two)) {
             printf("[TEST] %s: %s[PASSED]%s\n", tag, MLOG_Color.Green,
                    MLOG_Color.Reset);
@@ -316,15 +319,15 @@ static void __internal__mlog_test_equ(const char* tag,
     }
 }
 
-static void __internal__mlog_panic(const char* msg) {
-    if (MLOG.__internal__config & MLOG_CONF_PANIC_ON) {
+static void _internal__mlog_panic(const char* msg) {
+    if (MLOG._internal__config & MLOG_CONF_PANIC_ON) {
         printf("[PANIC]: %s\n", msg);
         exit(EXIT_FAILURE);
     }
 }
 
-static void __internal__mlog_panicf(const char* msg, ...) {
-    if (MLOG.__internal__config & MLOG_CONF_PANIC_ON) {
+static void _internal__mlog_panicf(const char* msg, ...) {
+    if (MLOG._internal__config & MLOG_CONF_PANIC_ON) {
         va_list args;
         va_start(args, msg);
         printf("[PANIC]: ");
@@ -333,6 +336,15 @@ static void __internal__mlog_panicf(const char* msg, ...) {
         va_end(args);
         exit(EXIT_FAILURE);
     }
+}
+
+static void _internal_mlog_todo(const char* info, const char* file, int line) {
+    if (info != NULL) {
+        printf("[TODO] '%s' | Where: %s | Line: %d\n", info, file, line);
+    } else {
+        printf("[TODO] Unimplemented! Where: %s | Line: %d\n", file, line);
+    }
+    exit(EXIT_FAILURE);
 }
 
 #endif
